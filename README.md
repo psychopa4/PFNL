@@ -1,6 +1,14 @@
 # Progressive Fusion Video Super-Resolution Network via Exploiting Non-Local Spatio-Temporal Correlations
 This work is based on [Wang et al](https://github.com/psychopa4/MMCNN) and [Tao et al](https://github.com/jiangsutx/SPMC_VideoSR).
 
+This work has tried to rebuild various state-of-the-art video SR methods, including [VESPCN](http://openaccess.thecvf.com/content_cvpr_2017/html/Caballero_Real-Time_Video_Super-Resolution_CVPR_2017_paper.html), 
+[RVSR-LTD](http://openaccess.thecvf.com/content_iccv_2017/html/Liu_Robust_Video_Super-Resolution_ICCV_2017_paper.html), 
+[MCResNet](https://www.researchgate.net/publication/313830988_Video_Super-Resolution_via_Motion_Compensation_and_Deep_Residual_Learning), 
+[DRVSR](http://openaccess.thecvf.com/content_iccv_2017/html/Tao_Detail-Revealing_Deep_Video_ICCV_2017_paper.html), 
+[FRVSR](http://openaccess.thecvf.com/content_cvpr_2018/html/Sajjadi_Frame-Recurrent_Video_Super-Resolution_CVPR_2018_paper.html), 
+[DUFVSR](http://openaccess.thecvf.com/content_cvpr_2018/html/Jo_Deep_Video_Super-Resolution_CVPR_2018_paper.html) and 
+[PFNL](http://openaccess.thecvf.com/content_ICCV_2019/html/Yi_Progressive_Fusion_Video_Super-Resolution_Network_via_Exploiting_Non-Local_Spatio-Temporal_Correlations_ICCV_2019_paper.html).
+
 ## Datasets
 We have selected [MM522 dataset](https://github.com/psychopa4/MMCNN) for training and collected another 20 sequences for evaluation, and in consider of copyright, the datasets should only be used for study.
 
@@ -51,7 +59,7 @@ ISSN={1051-8215},
 ```
 
 ## Contact
-If you have questions or suggestions, please send an email to yipeng@whu.edu.cn.
+If you have questions or suggestions, please open an issue here or send an email to yipeng@whu.edu.cn.
 
 ## Visual Results
 We show the visual results under 4x upscaling.
