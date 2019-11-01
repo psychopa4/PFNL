@@ -178,6 +178,7 @@ class DUFVSR(VSR):
             
             if step>500 and loss_v>10:
                 print('Model collapsed with loss={}'.format(loss_v))
+                break
                 
             
     def test_video_truth(self, path, name='result', reuse=False, part=8):

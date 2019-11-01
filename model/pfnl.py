@@ -196,6 +196,7 @@ class PFNL(VSR):
 
             if step>500 and loss_v>10:
                 print('Model collapsed with loss={}'.format(loss_v))
+                break
                 
             
 
