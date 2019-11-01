@@ -46,7 +46,9 @@ def NonLocalBlock(input_x, out_channels, sub_sample=1, nltype=0 ,is_bn=False, sc
 
             # theta_x = tf.reshape(theta, [batchsize, out_channels, -1])
             # theta_x = tf.transpose(theta_x, [0,2,1])
-            phi_x = tf.reshape(phi, [batchsize, out_channels, -1])
+            phi_x = tf.reshape(phi, [batchsize, -1, out_channels])
+            phi_x = tf.transpose(phi_x, [0,2,1])
+            #phi_x = tf.reshape(phi_x, [batchsize, out_channels, -1])
 
             f = tf.matmul(theta_x, phi_x)
             # ???
