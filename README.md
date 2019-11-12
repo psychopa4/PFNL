@@ -23,7 +23,7 @@ We only provide the ground truth images and the corresponding 4x downsampled LR 
   - Tensorflow (Tested on 1.12.0)
 
 ## Training
-We provide [pre-trained models](https://drive.google.com/file/d/1RuiuQngwRx0ea_ZTHXhbqIrLgfVCOoKD/view?usp=sharing), note that some models have been retrained and paart ofthe codes have been modified, thus some methods may behave a little different from that reported in the papers.
+We provide [pre-trained models](https://drive.google.com/file/d/1RuiuQngwRx0ea_ZTHXhbqIrLgfVCOoKD/view?usp=sharing), note that some models have been retrained and part of the codes have been modified, thus some methods may behave a little different from that reported in the paper.
 Be free to use main.py to train any model you would like to.
 
 ## Testing
@@ -75,7 +75,7 @@ This is a real LR frame shoot by us.
 
 ![Image text](https://github.com/psychopa4/PFNL/blob/master/pictures/comp2.jpg)
 
-## Results on Vid4 test dataset
+## PSNR/SSIM on Vid4 test dataset (4xSR)
 | Sequence | VESPCN | RVSR-LTD | MCResNet | DRVSR | FRVSR | DUF_52L | PFNL |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |calendar | 22.20 / 0.7156 | 22.07 / 0.7041 | 22.44 / 0.7319 | 22.88 / 0.7586 | 23.46 / 0.7854 | 23.85 / 0.8052 | 24.37 / 0.8246 |
@@ -85,7 +85,7 @@ This is a real LR frame shoot by us.
 |average | 25.54 / 0.7507 | 25.49 / 0.7485 | 25.81 / 0.7664 | 26.16 / 0.7867 | 26.70 / 0.8126 | 27.13 / 0.8267 | 27.41 / 0.8383 |
 |average* | 25.35 / 0.7557 | - / - | 25.45 / 0.7467 | 25.52 / 0.7600 | 26.69 / 0.8220 | 27.34 / 0.8327 | 27.41 / 0.8383 |
 
-## Results on UDM10 test dataset
+## PSNR/SSIM on UDM10 test dataset (4xSR)
 | Sequence | VESPCN | RVSR-LTD | MCResNet | DRVSR | FRVSR | DUF_52L | PFNL |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |archpeople | 35.37 / 0.9504 | 35.20 / 0.9485 | 35.46 / 0.9512 | 35.83 / 0.9547 | 36.24 / 0.9579 | 36.92 / 0.9638 | 38.35 / 0.9724 |
