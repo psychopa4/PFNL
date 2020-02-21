@@ -14,6 +14,8 @@ We have selected [MM522 dataset](https://github.com/psychopa4/MMCNN) for trainin
 
 The datasets can be downloaded from Google Drive, [train](https://drive.google.com/open?id=1xPMYiA0JwtUe9GKiUa4m31XvDPnX7Juu) and [evaluation](https://drive.google.com/file/d/1Px0xAE2EUzXbgfDJZVR2KfG7zAk7wPZO/view?usp=sharing).
 
+Note that the [training](https://drive.google.com/open?id=1xPMYiA0JwtUe9GKiUa4m31XvDPnX7Juu) dataset provides Ground Truth images and Bicubic downsampling LR images, while the [evaluation](https://drive.google.com/file/d/1Px0xAE2EUzXbgfDJZVR2KfG7zAk7wPZO/view?usp=sharing) dataset provides Gaussian blur and downsampling images. Thus, please refer to ./model/base_model.py for generating Gaussian blur and downsampling images from Ground Truth images.
+
 Unzip the training dataset to ./data/train/ and evaluation dataset to ./data/val/ .
 
 We only provide the ground truth images and the corresponding 4x downsampled LR images by [DUFVSR](https://github.com/yhjo09/VSR-DUF).
