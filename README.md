@@ -18,8 +18,6 @@ Note that the [training](https://drive.google.com/open?id=1xPMYiA0JwtUe9GKiUa4m3
 
 Unzip the training dataset to ./data/train/ and evaluation dataset to ./data/val/ .
 
-We only provide the ground truth images and the corresponding 4x downsampled LR images by [DUFVSR](https://github.com/yhjo09/VSR-DUF).
-
 ## Environment
   - Python (Tested on 3.6)
   - Tensorflow (Tested on 1.12.0)
