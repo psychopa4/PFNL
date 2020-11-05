@@ -22,6 +22,14 @@ import scipy.ndimage
 
 
 def compute_ssim(im1, im2, l=255):
+    """
+    Compute the mean and standard deviation of an image.
+
+    Args:
+        im1: (array): write your description
+        im2: (array): write your description
+        l: (float): write your description
+    """
     # k1,k2 & c1,c2 depend on L (width of color map)
     k_1 = 0.01
     c_1 = (k_1 * l)**2

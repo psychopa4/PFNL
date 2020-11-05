@@ -6,6 +6,12 @@ slim = tf.contrib.slim
 
 
 def im2uint8(x):
+    """
+    Convert a tensor to a tensor.
+
+    Args:
+        x: (todo): write your description
+    """
     if x.__class__ == tf.Tensor:
         return tf.cast(tf.clip_by_value(x, 0.0, 1.0) * 255.0, tf.uint8)
     else:
@@ -14,6 +20,12 @@ def im2uint8(x):
 
 
 def get_shape(x):
+    """
+    Get the shape of x.
+
+    Args:
+        x: (int): write your description
+    """
     shape = tf.shape(x)
     check = tf.Assert(tf.reduce_all(shape >= 0), ["EASYFLOW: Need value.shape >= 0, got ", shape])
     shape = control_flow_ops.with_dependencies([check], shape)
@@ -21,6 +33,13 @@ def get_shape(x):
 
 
 def zero_upsampling(x, scale_factor):
+    """
+    Reshape the zero - d array.
+
+    Args:
+        x: (todo): write your description
+        scale_factor: (float): write your description
+    """
     dims = x.get_shape().as_list()
     if len(dims) == 5:
         n, t, h, w, c = dims
@@ -38,10 +57,23 @@ def zero_upsampling(x, scale_factor):
 
 
 def leaky_relu(x, alpha=0.1):
+    """
+    Relu_relu.
+
+    Args:
+        x: (array): write your description
+        alpha: (float): write your description
+    """
     return tf.maximum(x, alpha * x)
 
 
 def prelu(x):
+    """
+    Prelu prelu function.
+
+    Args:
+        x: (todo): write your description
+    """
     alphas = tf.get_variable('alpha', x.get_shape()[-1],
                              initializer=tf.constant_initializer(0.0),
                              dtype=tf.float32)
@@ -52,12 +84,27 @@ def prelu(x):
 
 
 def display_tf_variables(train_vars):
+    """
+    Display tf.
+
+    Args:
+        train_vars: (todo): write your description
+    """
     print('Training Variables: ')
     for var in train_vars:
         print('\t', var.name)
 
 
 def resize_images(images, size, method=2, align_corners=False):
+    """
+    Resize images.
+
+    Args:
+        images: (todo): write your description
+        size: (int): write your description
+        method: (str): write your description
+        align_corners: (str): write your description
+    """
     dims = len(images.get_shape())
     if dims == 5:
         n, t, h, w, c = images.get_shape().as_list()
@@ -69,6 +116,12 @@ def resize_images(images, size, method=2, align_corners=False):
 
 
 def rgb2y(inputs):
+    """
+    Convert rgb to rgb.
+
+    Args:
+        inputs: (todo): write your description
+    """
     with tf.name_scope('rgb2y'):
         if inputs.get_shape()[-1].value == 1:
             return inputs
@@ -84,6 +137,12 @@ def rgb2y(inputs):
 
 
 def rgb2ycbcr(inputs):
+    """
+    Convert ycbio.
+
+    Args:
+        inputs: (todo): write your description
+    """
     with tf.name_scope('rgb2ycbcr'):
         if inputs.get_shape()[-1].value == 1:
             return inputs
@@ -102,6 +161,12 @@ def rgb2ycbcr(inputs):
 
 
 def ycbcr2rgb(inputs):
+    """
+    Convert ycbio.
+
+    Args:
+        inputs: (todo): write your description
+    """
     with tf.name_scope('ycbcr2rgb'):
         if inputs.get_shape()[-1].value == 1:
             return inputs
@@ -124,6 +189,12 @@ def ycbcr2rgb(inputs):
     
 
 def rgb2gray(inputs):
+    """
+    Convert an rgb image to rgb.
+
+    Args:
+        inputs: (todo): write your description
+    """
     with tf.name_scope('rgb2gray'):
         if inputs.get_shape()[-1].value == 1:
             return inputs
@@ -138,7 +209,19 @@ def rgb2gray(inputs):
 
 
 def flowToColor(flow, maxflow=None):
+    """
+    Convert a color object corresponding to an rgb.
+
+    Args:
+        flow: (todo): write your description
+        maxflow: (int): write your description
+    """
     def makeColorwheel():
+        """
+        Creates a wheel.
+
+        Args:
+        """
         RY = 15
         YG = 6
         GC = 4
@@ -177,6 +260,13 @@ def flowToColor(flow, maxflow=None):
         return colorwheel
 
     def atan2(y, x):
+        """
+        Computes the angle between two matrices.
+
+        Args:
+            y: (todo): write your description
+            x: (todo): write your description
+        """
         angle = tf.where(tf.greater(x, 0.0), tf.atan(y / x), tf.zeros_like(x))
         angle = tf.where(tf.logical_and(tf.less(x, 0.0), tf.greater_equal(y, 0.0)), tf.atan(y / x) + np.pi, angle)
         angle = tf.where(tf.logical_and(tf.less(x, 0.0), tf.less(y, 0.0)), tf.atan(y / x) - np.pi, angle)
@@ -226,6 +316,13 @@ def flowToColor(flow, maxflow=None):
 
 
 def channel2sub(x, scale_factor):
+    """
+    Apply a 2d : class :. ndarray.
+
+    Args:
+        x: (todo): write your description
+        scale_factor: (float): write your description
+    """
     dims = len(x.get_shape())
     if dims == 5:
         num_batch, num_frame, height, width, num_channels = map(lambda x: x.value, x.get_shape())
@@ -247,6 +344,13 @@ def channel2sub(x, scale_factor):
 
 
 def sub2channel(x, scale_factor):
+    """
+    Sub2channel.
+
+    Args:
+        x: (todo): write your description
+        scale_factor: (float): write your description
+    """
     dims = len(x.get_shape())
     if dims == 5:
         num_batch, num_frame, out_height, out_width, num_channels = map(lambda x: x.value, x.get_shape())
@@ -266,6 +370,13 @@ def sub2channel(x, scale_factor):
 
 
 def _repeat(x, n_repeats):
+    """
+    Perform a tensor.
+
+    Args:
+        x: (todo): write your description
+        n_repeats: (int): write your description
+    """
     with tf.variable_scope('_repeat'):
         # rep = tf.transpose(
         #     tf.expand_dims(tf.ones(shape=tf.pack([n_repeats, ])), 1), [1, 0])
@@ -282,6 +393,13 @@ def _repeat(x, n_repeats):
 
 
 def meshgrid(height, width):
+    """
+    Meshgridgrid.
+
+    Args:
+        height: (int): write your description
+        width: (int): write your description
+    """
     with tf.variable_scope('_meshgrid'):
         # This should be equivalent to:
         #  x_t, y_t = np.meshgrid(np.linspace(-1, 1, width),
@@ -304,7 +422,24 @@ def meshgrid(height, width):
 
 
 def imwarp_backward(uv, input_dim, out_size):
+    """
+    Backward computation.
+
+    Args:
+        uv: (todo): write your description
+        input_dim: (todo): write your description
+        out_size: (int): write your description
+    """
     def _interpolate_backward(im, x, y, out_size):
+        """
+        Backward computation.
+
+        Args:
+            im: (todo): write your description
+            x: (array): write your description
+            y: (array): write your description
+            out_size: (int): write your description
+        """
         with tf.variable_scope('_interp_b', reuse=False):
             # constants
             num_batch, height, width, channels = map(lambda x: x.value, im.get_shape())
@@ -397,7 +532,24 @@ def imwarp_backward(uv, input_dim, out_size):
 
 
 def imwarp_forward(uv, input_dim, out_size):
+    """
+    Forward computation.
+
+    Args:
+        uv: (todo): write your description
+        input_dim: (todo): write your description
+        out_size: (int): write your description
+    """
     def _interpolate_forward(im, x, y, out_size):
+        """
+        Forward computation.
+
+        Args:
+            im: (todo): write your description
+            x: (todo): write your description
+            y: (todo): write your description
+            out_size: (int): write your description
+        """
         with tf.variable_scope('_interp_f', reuse=False):
             # constants
             num_batch, height, width, channels = map(lambda x: x.value, im.get_shape())

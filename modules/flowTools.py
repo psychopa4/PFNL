@@ -3,11 +3,24 @@ import numpy as np
 import struct
 
 def fspecialGauss(size, sigma):
+    """
+    Fspecialized fspecial filter.
+
+    Args:
+        size: (int): write your description
+        sigma: (float): write your description
+    """
     x, y = np.mgrid[-size//2 + 1:size//2 + 1, -size//2 + 1:size//2 + 1]
     g = np.exp(-((x**2 + y**2) / (2.0 * sigma**2)))
     return g / g.sum()
 
 def readFlowFile( filename ):
+    """
+    Reads a flow file.
+
+    Args:
+        filename: (str): write your description
+    """
 	# readFlowFile read a flow file FILENAME into 2-band image IMG
 
 	TAG_FLOAT = 202021.25  # check for this when READING the file
@@ -50,6 +63,13 @@ def readFlowFile( filename ):
 	return im
 
 def writeFlowFile( img, filename ):
+    """
+    Writes flow information to a file.
+
+    Args:
+        img: (array): write your description
+        filename: (str): write your description
+    """
 	TAG_STRING = 'PIEH'         # use this when WRITING the file
 
 	# sanity check
@@ -76,6 +96,14 @@ def writeFlowFile( img, filename ):
 	fid.write(tmp.tobytes())
 
 def flow_aae(f1, f2, mask=None):
+    """
+    Calculate flow rate
+
+    Args:
+        f1: (todo): write your description
+        f2: (todo): write your description
+        mask: (array): write your description
+    """
 	print f1.shape
 	tmp = (np.sum(np.multiply(f1,f2), 2) + 1) / np.sqrt((np.sum(f1**2, 2) + 1) * (np.sum(f2**2, 2) + 1))
 	tmp[tmp>1.0] = 1.0
@@ -92,6 +120,16 @@ def flow_aae(f1, f2, mask=None):
 	return aae, sae
 
 def flowAngErr(tu, tv, u, v, bord):
+    """
+    R calculate flow rate.
+
+    Args:
+        tu: (todo): write your description
+        tv: (todo): write your description
+        u: (todo): write your description
+        v: (todo): write your description
+        bord: (todo): write your description
+    """
 	h, w = tu.shape
 	smallflow = 0.0
 
@@ -126,6 +164,13 @@ def flowAngErr(tu, tv, u, v, bord):
 	return mang, stdang, mepe
 
 def flowToColor(flow,maxFlow=-1):
+    """
+    Calculate flow
+
+    Args:
+        flow: (todo): write your description
+        maxFlow: (int): write your description
+    """
 	# flowToColor(flow, maxFlow) flowToColor color codes flow field, normalize
 	# based on specified value,
 
@@ -184,6 +229,13 @@ def flowToColor(flow,maxFlow=-1):
 	return img
 
 def computeColor(u,v):
+    """
+    Compute the color of an image
+
+    Args:
+        u: (todo): write your description
+        v: (todo): write your description
+    """
 	nanIdx = (u==np.nan) | (v==np.nan)
 	u[nanIdx] = 0
 	v[nanIdx] = 0
@@ -220,6 +272,11 @@ def computeColor(u,v):
 	return img
 
 def makeColorwheel():
+    """
+    Creates a wheel.
+
+    Args:
+    """
 	RY = 15
 	YG = 6
 	GC = 4

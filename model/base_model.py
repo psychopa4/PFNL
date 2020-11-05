@@ -15,6 +15,12 @@ from tqdm import trange,tqdm
 
 class VSR(object):
     def __init__(self):
+        """
+        Initialize training data.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames=7
         self.scale=4
         self.in_size=32
@@ -34,7 +40,18 @@ class VSR(object):
     
 
     def frvsr_input_producer(self):
+        """
+        Reads : py : func.
+
+        Args:
+            self: (todo): write your description
+        """
         def read_data():
+            """
+            Reads a png from the image.
+
+            Args:
+            """
             idx0 = self.num_frames // 2
             data_seq = tf.random_crop(self.data_queue, [2, self.num_frames])
             input = tf.stack([tf.image.decode_png(tf.read_file(data_seq[0][i]), channels=3) for i in range(self.num_frames)])
@@ -45,6 +62,13 @@ class VSR(object):
             return input, gt
 
         def prepprocessing(input, gt=None):
+            """
+            Prepprocessing.
+
+            Args:
+                input: (todo): write your description
+                gt: (todo): write your description
+            """
             input = tf.cast(input, tf.float32) / 255.0
             gt = tf.cast(gt, tf.float32) / 255.0
 
@@ -87,7 +111,18 @@ class VSR(object):
         return batch_in, batch_gt
 
     def double_input_producer(self):
+        """
+        Reads images from the image.
+
+        Args:
+            self: (todo): write your description
+        """
         def read_data():
+            """
+            Reads the image from the image.
+
+            Args:
+            """
             idx0 = self.num_frames // 2
             data_seq = tf.random_crop(self.data_queue, [2, self.num_frames])
             input = tf.stack([tf.image.decode_png(tf.read_file(data_seq[0][i]), channels=3) for i in range(self.num_frames)])
@@ -106,6 +141,13 @@ class VSR(object):
         
 
         def prepprocessing(input, gt=None):
+            """
+            Prepprocessing.
+
+            Args:
+                input: (todo): write your description
+                gt: (todo): write your description
+            """
             input = tf.cast(input, tf.float32) / 255.0
             gt = tf.cast(gt, tf.float32) / 255.0
 
@@ -148,7 +190,18 @@ class VSR(object):
         return batch_in, batch_gt
 
     def single_input_producer(self):
+        """
+        Read a single tf.
+
+        Args:
+            self: (todo): write your description
+        """
         def read_data():
+            """
+            Reads a png from disk.
+
+            Args:
+            """
             data_seq = tf.random_crop(self.data_queue, [1, self.num_frames])
             #input = tf.stack([tf.image.decode_png(tf.read_file(data_seq[0][i]), channels=3) for i in range(self.num_frames)])
             gt = tf.stack([tf.image.decode_png(tf.read_file(data_seq[0][i]), channels=3) for i in range(self.num_frames)])
@@ -159,6 +212,12 @@ class VSR(object):
             return input, gt
 
         def prepprocessing(gt=None):
+            """
+            Prepprocessing.
+
+            Args:
+                gt: (todo): write your description
+            """
             n,w,h,c=gt.shape
             sp=tf.shape(gt)[1:]
             size=tf.convert_to_tensor([self.gt_size,self.gt_size,c], dtype=tf.int32)
@@ -200,16 +259,41 @@ class VSR(object):
             
         
     def forward(self, x):
+        """
+        Implement forward on x.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         pass
 
                     
     def build(self):
+        """
+        Build a build.
+
+        Args:
+            self: (todo): write your description
+        """
         pass
         
     def eval(self):
+        """
+        Evaluate the evaluation.
+
+        Args:
+            self: (todo): write your description
+        """
         pass
     
     def train(self):
+        """
+        Train a taver.
+
+        Args:
+            self: (todo): write your description
+        """
         config = tf.ConfigProto() 
         config.gpu_options.allow_growth = True
         sess = tf.Session(config=config) 
@@ -221,6 +305,15 @@ class VSR(object):
         return
                 
     def save(self, sess, checkpoint_dir, step):
+        """
+        Save the model to disk.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (int): write your description
+        """
         model_name = "VSR"
         # model_dir = "%s_%s_%s" % (self.dataset_name, self.batch_size, self.output_size)
         # checkpoint_dir = os.path.join(checkpoint_dir, model_dir)
@@ -229,6 +322,15 @@ class VSR(object):
         self.saver.save(sess, os.path.join(checkpoint_dir, model_name), global_step=step)
 
     def load(self, sess, checkpoint_dir, step=None):
+        """
+        Load the model.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (todo): write your description
+        """
         print(" [*] Reading SR checkpoints...")
         model_name = "VSR"
 
@@ -243,9 +345,24 @@ class VSR(object):
             return False
             
     def test_video(self, path, name='result', reuse=False):
+        """
+        Test if a video.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            name: (str): write your description
+            reuse: (todo): write your description
+        """
         pass
 
     def testvideos(self):
+        """
+        Test if a list of the test.
+
+        Args:
+            self: (todo): write your description
+        """
         pass
     
         

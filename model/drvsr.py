@@ -24,6 +24,12 @@ This code is based on the original code of DRVSR https://github.com/jiangsutx/SP
 
 class DRVSR(VSR):
     def __init__(self):
+        """
+        Initialize loss.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames = 3
         self.num_block = 1
         self.crop_size = 100
@@ -51,7 +57,19 @@ class DRVSR(VSR):
         self.flownets = EASYFLOW()
 
     def input_producer(self, batch_size=10):
+        """
+        Reads : batch_size - image ]
+
+        Args:
+            self: (todo): write your description
+            batch_size: (int): write your description
+        """
         def read_data():
+            """
+            Reads a png image file.
+
+            Args:
+            """
             idx0 = self.num_frames // 2
             data_seq = tf.random_crop(self.data_queue, [2, self.num_frames])
             input = tf.stack(
@@ -63,6 +81,13 @@ class DRVSR(VSR):
             return input, gt
 
         def prepprocessing(input, gt=None):
+            """
+            Prepprocessing.
+
+            Args:
+                input: (todo): write your description
+                gt: (todo): write your description
+            """
             input = tf.cast(input, tf.float32) / 255.0
             gt = tf.cast(gt, tf.float32) / 255.0
 
@@ -102,6 +127,15 @@ class DRVSR(VSR):
         return batch_in, batch_gt
 
     def forward(self, frames_lr, is_training=True, reuse=False):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            frames_lr: (todo): write your description
+            is_training: (bool): write your description
+            reuse: (todo): write your description
+        """
         num_batch, num_frame, height, width, num_channels = frames_lr.get_shape().as_list()
         out_height = height * self.scale_factor
         out_width = width * self.scale_factor
@@ -189,6 +223,12 @@ class DRVSR(VSR):
         return x_unwrap, frame_i_fw_all
 
     def build_model(self):
+        """
+        Builds the model.
+
+        Args:
+            self: (todo): write your description
+        """
         frames_lr, frame_gt = self.input_producer(batch_size=self.batch_size)
         n, t, h, w, c = frames_lr.get_shape().as_list()
         output, frame_i_fw = self.forward(frames_lr)
@@ -223,6 +263,12 @@ class DRVSR(VSR):
         # tf.summary.scalar('loss_all', self.loss)
 
     def evaluation(self):
+        """
+        Evaluate the model.
+
+        Args:
+            self: (todo): write your description
+        """
         print('Evaluating ...')
         inList_all = []
         gtList_all = []
@@ -311,6 +357,14 @@ class DRVSR(VSR):
 
     def train(self):
         def train_op_func(loss, var_list, is_gradient_clip=False):
+            """
+            Evaluate op_func.
+
+            Args:
+                loss: (todo): write your description
+                var_list: (list): write your description
+                is_gradient_clip: (todo): write your description
+            """
             if is_gradient_clip:
                 train_op = tf.train.AdamOptimizer(lr, self.beta1)
                 grads_and_vars = train_op.compute_gradients(loss, var_list=var_list)
@@ -401,12 +455,30 @@ class DRVSR(VSR):
 
 
     def save(self, sess, checkpoint_dir, step):
+        """
+        Save the model to disk.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (int): write your description
+        """
         model_name = "videoSR.model"
         if not os.path.exists(checkpoint_dir):
             os.makedirs(checkpoint_dir)
         self.saver.save(sess, os.path.join(checkpoint_dir, model_name), global_step=step)
 
     def load(self, sess, checkpoint_dir, step=None):
+        """
+        Load the model.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (todo): write your description
+        """
         print(" [*] Reading SR checkpoints...")
         model_name = "videoSR.model"
 
@@ -421,6 +493,17 @@ class DRVSR(VSR):
             return False
                 
     def testvideo(self, dataPath=None, savename='result', reuse=False, scale_factor=4, num_frames=3):
+        """
+        Test if an array of images.
+
+        Args:
+            self: (todo): write your description
+            dataPath: (str): write your description
+            savename: (str): write your description
+            reuse: (todo): write your description
+            scale_factor: (float): write your description
+            num_frames: (int): write your description
+        """
         inList = sorted(glob.glob(os.path.join(dataPath, 'blur{}/*.png').format(scale_factor)))
         inp = [cv2_imread(i).astype(np.float32) / 255.0 for i in inList]
 
@@ -511,6 +594,15 @@ class DRVSR(VSR):
             print('spent {} s in total and {} s in average'.format(np.sum(all_time),np.mean(all_time[1:])))
 
     def testvideos(self,datapath='/dev/f/data/video/test2/vid4',start=0,savename='drvsr'):
+        """
+        Test if a video file.
+
+        Args:
+            self: (todo): write your description
+            datapath: (str): write your description
+            start: (todo): write your description
+            savename: (str): write your description
+        """
         kind=sorted(glob.glob(os.path.join(datapath,'*')))
         kind=[k for k in kind if os.path.isdir(k)]
         reuse=False

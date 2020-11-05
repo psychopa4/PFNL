@@ -30,6 +30,12 @@ The code is mainly based on https://github.com/psychopa4/MMCNN and https://githu
 
 class LTDVSR(VSR):
     def __init__(self):
+        """
+        Initialize the training data.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames = 5
         self.in_size = 30
         self.scale = 4
@@ -49,6 +55,15 @@ class LTDVSR(VSR):
         self.log_dir='./ltdvsr.txt'
 
     def forward(self, frames_lr, is_training=True, reuse=False):
+        """
+        Forward loop.
+
+        Args:
+            self: (todo): write your description
+            frames_lr: (todo): write your description
+            is_training: (bool): write your description
+            reuse: (todo): write your description
+        """
         num_batch, num_frame, height, width, num_channels = frames_lr.get_shape().as_list()
         out_height = height * self.scale
         out_width = width * self.scale
@@ -134,6 +149,14 @@ class LTDVSR(VSR):
         return tf.stack([out], axis=1,name='out')#out
 
     def flow(self, source, reference):
+        """
+        Flow flow flow.
+
+        Args:
+            self: (todo): write your description
+            source: (str): write your description
+            reference: (todo): write your description
+        """
         ds=1
         activate=tf.nn.relu#tf.nn.leaky_relu
         ki=tf.contrib.layers.xavier_initializer()
@@ -149,6 +172,12 @@ class LTDVSR(VSR):
         return uv
 
     def build_model(self):
+        """
+        Builds the model.
+
+        Args:
+            self: (todo): write your description
+        """
         frames_lr, frame_gt = self.double_input_producer()
         n, t, h, w, c = frames_lr.get_shape().as_list()
         output = self.forward(frames_lr)
@@ -173,6 +202,12 @@ class LTDVSR(VSR):
         self.loss = self.loss_mse + self.loss_flow * 0.01
 
     def evaluation(self):
+        """
+        Evaluate the evaluation.
+
+        Args:
+            self: (todo): write your description
+        """
         print('Evaluating ...')
 
         filenames=open(self.eval_dir, 'rt').read().splitlines()
@@ -321,6 +356,15 @@ class LTDVSR(VSR):
             assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
 
     def save(self, sess, checkpoint_dir, step):
+        """
+        Save the model to disk.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (int): write your description
+        """
         model_name = "videoSR.model"
         # model_dir = "%s_%s_%s" % (self.dataset_name, self.batch_size, self.output_size)
         # checkpoint_dir = os.path.join(checkpoint_dir, model_dir)
@@ -329,6 +373,15 @@ class LTDVSR(VSR):
         self.saver.save(sess, os.path.join(checkpoint_dir, model_name), global_step=step)
 
     def load(self, sess, checkpoint_dir, step=None):
+        """
+        Load the model.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (todo): write your description
+        """
         print(" [*] Reading SR checkpoints...")
         model_name = "videoSR.model"
 
@@ -343,6 +396,17 @@ class LTDVSR(VSR):
             return False
 
     def testvideo(self, dataPath=None, savename='result', reuse=False, scale=4, num_frames=3):
+        """
+        Test if the video.
+
+        Args:
+            self: (todo): write your description
+            dataPath: (str): write your description
+            savename: (str): write your description
+            reuse: (todo): write your description
+            scale: (float): write your description
+            num_frames: (int): write your description
+        """
         scale = self.scale
         num_frames= self.num_frames
         inList = sorted(glob.glob(os.path.join(dataPath, 'blur{}/*.png').format(scale)))
@@ -419,6 +483,15 @@ class LTDVSR(VSR):
             print('spent {} s in total and {} s in average'.format(np.sum(all_time),np.mean(all_time[1:])))
 
     def testvideos(self,datapath='/dev/f/data/video/test2/udm10',start=0,savename='ltdvsr'):
+        """
+        Test if a video file.
+
+        Args:
+            self: (todo): write your description
+            datapath: (str): write your description
+            start: (todo): write your description
+            savename: (str): write your description
+        """
         kind=sorted(glob.glob(os.path.join(datapath,'*')))
         kind=[k for k in kind if os.path.isdir(k)]
         reuse=False

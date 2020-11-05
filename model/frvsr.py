@@ -20,6 +20,12 @@ The code is mainly based on https://github.com/psychopa4/MMCNN and https://githu
         
 class FRVSR(VSR):
     def __init__(self):
+        """
+        Initialize training data.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames=10
         self.scale=4
         self.in_size=32
@@ -39,6 +45,15 @@ class FRVSR(VSR):
             
         
     def forward(self, x, xp=None, est=None):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+            xp: (todo): write your description
+            est: (todo): write your description
+        """
         mf=128
         dk=3
         activate=tf.nn.relu
@@ -66,6 +81,14 @@ class FRVSR(VSR):
         return out
     
     def flow(self, i_t,i_pt):
+        """
+        Flow flow flow.
+
+        Args:
+            self: (todo): write your description
+            i_t: (todo): write your description
+            i_pt: (callable): write your description
+        """
         mf=128
         dk=3
         activate=tf.nn.leaky_relu
@@ -96,6 +119,14 @@ class FRVSR(VSR):
         return uv
 
     def upscale_warp(self, uv, est):
+        """
+        Warpcale the image.
+
+        Args:
+            self: (todo): write your description
+            uv: (array): write your description
+            est: (todo): write your description
+        """
         n,h,w,c=est.get_shape().as_list()
         upuv=tf.image.resize_images(uv,[h,w],method=0)
         warp_est=imwarp_forward(upuv,est,[h,w])
@@ -105,6 +136,12 @@ class FRVSR(VSR):
 
                     
     def build(self):
+        """
+        Builds the graph.
+
+        Args:
+            self: (todo): write your description
+        """
         in_h,in_w=self.eval_in_size
         H = tf.placeholder(tf.float32, shape=[None, self.num_frames, None, None, 3], name='H_truth')
         L = tf.placeholder(tf.float32, shape=[self.batch_size, self.num_frames, self.in_size, self.in_size, 3], name='L_input')
@@ -148,6 +185,12 @@ class FRVSR(VSR):
         self.L, self.L_eval, self.H, self.SR =  L, L_eval, H, SR_train
         
     def eval(self):
+        """
+        Evaluate the model.
+
+        Args:
+            self: (todo): write your description
+        """
         print('Evaluating ...')
         if not hasattr(self, 'sess'):
             global_step=tf.Variable(initial_value=0, trainable=False)
@@ -211,6 +254,12 @@ class FRVSR(VSR):
             f.write('{'+'"Iter": {} , "PSNR": {}, "MSE": {}'.format(sess.run(self.global_step), psnr_avg.tolist(), mse_avg.tolist())+'}\n')
     
     def train(self):
+        """
+        Train the model.
+
+        Args:
+            self: (todo): write your description
+        """
         LR, HR= self.frvsr_input_producer() #input_producer(train_dir=self.train_dir, batch_size=self.batch_size, scale=self.scale, in_size=self.in_size, num_frames=self.num_frames)
         global_step=tf.Variable(initial_value=0, trainable=False)
         self.global_step=global_step
@@ -267,6 +316,15 @@ class FRVSR(VSR):
                 
             
     def test_video(self, path, name='result', reuse=False):
+        """
+        Test for video.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            name: (str): write your description
+            reuse: (todo): write your description
+        """
         save_path=join(path,name)
         automkdir(save_path)
         
@@ -310,6 +368,15 @@ class FRVSR(VSR):
             print('spent {} s in total and {} s in average'.format(np.sum(all_time),np.mean(all_time[1:])))
 
     def testvideos(self, path='/dev/f/data/video/test2/udm10', start=0, name='frvsr'):
+        """
+        Test for all the videos.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            start: (todo): write your description
+            name: (str): write your description
+        """
         kind=sorted(glob.glob(join(path,'*')))
         kind=[k for k in kind if os.path.isdir(k)]
         reuse=False

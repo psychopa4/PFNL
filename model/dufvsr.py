@@ -18,6 +18,12 @@ The code is mainly based on https://github.com/psychopa4/MMCNN, https://github.c
         
 class DUFVSR(VSR):
     def __init__(self):
+        """
+        Initialize training data.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames=7
         self.scale=4
         self.in_size=32
@@ -36,6 +42,14 @@ class DUFVSR(VSR):
         self.log_dir='./duf_52.txt'
             
     def forward(self, x, is_train):  
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+            is_train: (bool): write your description
+        """
         # shape of x: [B,T_in,H,W,C]
 
         # Generate filters and residual
@@ -58,6 +72,12 @@ class DUFVSR(VSR):
             return x
                     
     def build(self):
+        """
+        Builds the graph.
+
+        Args:
+            self: (todo): write your description
+        """
         H = tf.placeholder(tf.float32, shape=[None, 1, None, None, 3], name='H_truth')
         L = tf.placeholder(tf.float32, shape=[None, self.num_frames, None, None, 3], name='L_input')
         is_train = tf.placeholder(tf.bool, shape=[]) # Phase ,scalar
@@ -68,6 +88,12 @@ class DUFVSR(VSR):
         self.L, self.H, self.SR, self.is_train =  L, H, SR, is_train
         
     def eval(self):
+        """
+        Evaluate the model.
+
+        Args:
+            self: (todo): write your description
+        """
         print('Evaluating ...')
         if not hasattr(self, 'sess'):
             global_step=tf.Variable(initial_value=0, trainable=False)
@@ -131,6 +157,12 @@ class DUFVSR(VSR):
             f.write('{'+'"Iter": {} , "PSNR": {}, "MSE": {}'.format(sess.run(self.global_step), psnr_avg.tolist(), mse_avg.tolist())+'}\n')
     
     def train(self):
+        """
+        Train the model.
+
+        Args:
+            self: (todo): write your description
+        """
         LR, HR= self.double_input_producer()
         global_step=tf.Variable(initial_value=0, trainable=False)
         self.global_step=global_step
@@ -182,6 +214,16 @@ class DUFVSR(VSR):
                 
             
     def test_video_truth(self, path, name='result', reuse=False, part=8):
+        """
+        Test if the video.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            name: (str): write your description
+            reuse: (todo): write your description
+            part: (todo): write your description
+        """
         save_path=join(path,name)
         automkdir(save_path)
         
@@ -232,6 +274,16 @@ class DUFVSR(VSR):
         print('spent {} s in total and {} s in average'.format(all_time,all_time/(max_frame-1)))
 
     def test_video_lr(self, path, name='result', reuse=False, part=8):
+        """
+        Test the video learning.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            name: (str): write your description
+            reuse: (todo): write your description
+            part: (todo): write your description
+        """
         save_path=join(path,name)
         automkdir(save_path)
         
@@ -279,6 +331,15 @@ class DUFVSR(VSR):
         print('spent {} s in total and {} s in average'.format(all_time,all_time/(max_frame-1)))
 
     def testvideos(self, path='/dev/f/data/video/test2/vid4', start=0, name='duf_52'):
+        """
+        Test if all the video files.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            start: (todo): write your description
+            name: (str): write your description
+        """
         kind=sorted(glob.glob(join(path,'*')))
         kind=[k for k in kind if os.path.isdir(k)]
         reuse=False

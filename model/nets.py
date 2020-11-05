@@ -7,6 +7,13 @@ stp = [[0,0], [1,1], [1,1], [1,1], [0,0]]
 sp = [[0,0], [0,0], [1,1], [1,1], [0,0]]
 
 def FR_16L(x, is_train):
+    """
+    16 - layer convolutional encoder.
+
+    Args:
+        x: (todo): write your description
+        is_train: (bool): write your description
+    """
     x = Conv3D(tf.pad(x, sp, mode='CONSTANT'), [1,3,3,3,64], [1,1,1,1,1], 'VALID', name='conv1') 
 
     F = 64
@@ -54,6 +61,13 @@ def FR_16L(x, is_train):
     return f, r
 
 def FR_28L(x, is_train):
+    """
+    Concaten function.
+
+    Args:
+        x: (todo): write your description
+        is_train: (bool): write your description
+    """
     x = Conv3D(tf.pad(x, sp, mode='CONSTANT'), [1,3,3,3,64], [1,1,1,1,1], 'VALID', name='conv1')
 
     F = 64
@@ -102,6 +116,13 @@ def FR_28L(x, is_train):
     return f, r
 
 def FR_52L(x, is_train):
+    """
+    52 - layer convolution.
+
+    Args:
+        x: (todo): write your description
+        is_train: (bool): write your description
+    """
     x = Conv3D(tf.pad(x, sp, mode='CONSTANT'), [1,3,3,3,64], [1,1,1,1,1], 'VALID', name='conv1')
 
     F = 64
