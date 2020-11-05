@@ -9,9 +9,24 @@ from modules.utils import *
 
 class FLOWNETS(object):
     def __init__(self, device='/gpu:0'):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            device: (todo): write your description
+        """
         self.device = device
 
     def load_flownets(self, sess, model_file='./flownets_model'):
+        """
+        Load the model from sessets.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            model_file: (str): write your description
+        """
         t_vars = tf.trainable_variables()
         flownets_var = [var for var in t_vars if 'flownets' in var.name]
         saver = tf.train.Saver(var_list=flownets_var)
@@ -19,6 +34,15 @@ class FLOWNETS(object):
         print('Loading Flownet-s model... OK!')
 
     def forward(self, inputs, scope='flownets', reuse=False):
+        """
+        Perform forward computation.
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+            scope: (todo): write your description
+            reuse: (todo): write your description
+        """
         with tf.variable_scope(scope, reuse=reuse) as sc:
             _, height, width, _ = inputs.get_shape().as_list()
             divisor = 64
@@ -82,6 +106,14 @@ class FLOWNETS(object):
         return predict_flow_final
 
     def uv_conf(self, input_a, input_b):
+        """
+        Computes the input tensor.
+
+        Args:
+            self: (todo): write your description
+            input_a: (todo): write your description
+            input_b: (todo): write your description
+        """
         [num_batch, height, width, channels] = input_a.get_shape().as_list()
         assert channels == 1 or channels == 3, 'ERROR: uv_conf need input with channel==1 or 3'
 
@@ -113,6 +145,14 @@ class FLOWNETS(object):
         return output
 
     def load_uv_conf(self, sess, model_file='uv_conf_model'):
+        """
+        Load a tf configuration file.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            model_file: (str): write your description
+        """
         t_vars = tf.trainable_variables()
         uv_conf_var = [var for var in t_vars if 'uv_conf' in var.name]
         saver = tf.train.Saver(var_list=uv_conf_var)
@@ -120,6 +160,13 @@ class FLOWNETS(object):
         print('Loading uv_conf model... OK!')
 
     def test(self, dataPath):
+        """
+        Test the test iscs.
+
+        Args:
+            self: (todo): write your description
+            dataPath: (str): write your description
+        """
         import os
         import glob
         import numpy as np
@@ -173,6 +220,13 @@ class FLOWNETS(object):
             # scipy.misc.imsave('flownets-warp-15.png', (res_warped_ref[idx0, :, :, :]*255.0).astype('uint8'))
     
     def test_uv(self, dataPath):
+        """
+        Test the cross - fit.
+
+        Args:
+            self: (todo): write your description
+            dataPath: (str): write your description
+        """
         import os
         import glob
         import numpy as np
@@ -204,10 +258,26 @@ class FLOWNETS(object):
 
 class FLOWNETC(object):
     def __init__(self, device='/gpu:0', caffenet=None):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            device: (todo): write your description
+            caffenet: (todo): write your description
+        """
         self.device = device
         self.caffenet = caffenet
 
     def load_flownetc(self, sess, model_file='flownetc_model'):
+        """
+        Loads a tf.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            model_file: (str): write your description
+        """
         t_vars = tf.trainable_variables()
         flownets_var = [var for var in t_vars if 'flownetc' in var.name]
         saver = tf.train.Saver(var_list=flownets_var)
@@ -215,6 +285,19 @@ class FLOWNETC(object):
         print('Loading Flownet-c model... OK!')
 
     def layer_corr(self, input_a, input_b, kernel_size=1, max_disp=20, pad=20, stride=[1, 2], name='corr'):
+        """
+        Layer convolutional layer.
+
+        Args:
+            self: (todo): write your description
+            input_a: (todo): write your description
+            input_b: (todo): write your description
+            kernel_size: (int): write your description
+            max_disp: (int): write your description
+            pad: (todo): write your description
+            stride: (int): write your description
+            name: (str): write your description
+        """
         [n, height, width, c] = map(lambda x: x.value, input_a.get_shape())
 
         kernel_r = (kernel_size - 1) / 2
@@ -240,6 +323,15 @@ class FLOWNETC(object):
         return output
 
     def forward(self, inputs, scope='flownetc', reuse=False):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+            scope: (todo): write your description
+            reuse: (todo): write your description
+        """
         with tf.variable_scope(scope, reuse=reuse) as sc:
             num_batch, height, width, num_channels = map(lambda x: x.value, inputs.get_shape())
             divisor = 64
@@ -313,6 +405,14 @@ class FLOWNETC(object):
         return predict_flow_final
 
     def uv_conf(self, input_a, input_b):
+        """
+        Confirms the conf.
+
+        Args:
+            self: (todo): write your description
+            input_a: (todo): write your description
+            input_b: (todo): write your description
+        """
         [num_batch, height, width, channels] = map(lambda x: x.value, input_a.get_shape())
         assert channels == 1 or channels == 3, 'ERROR: uv_conf need input with channel==1 or 3'
 
@@ -344,6 +444,14 @@ class FLOWNETC(object):
         return output
 
     def load_uv_conf(self, sess, model_file='uv_conf_model'):
+        """
+        Load a tf configuration file.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            model_file: (str): write your description
+        """
         t_vars = tf.trainable_variables()
         uv_conf_var = [var for var in t_vars if 'uv_conf' in var.name]
         saver = tf.train.Saver(var_list=uv_conf_var)
@@ -351,6 +459,13 @@ class FLOWNETC(object):
         print('Loading uv_conf model... OK!')
 
     def test(self, dataPath):
+        """
+        Test for train iscs_tensor_tensor.
+
+        Args:
+            self: (todo): write your description
+            dataPath: (str): write your description
+        """
         import os
         import glob
         import numpy as np

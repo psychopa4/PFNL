@@ -13,6 +13,12 @@ from modules.videosr_ops import *
 
 class EASYFLOW(object):
     def __init__(self):
+        """
+        Initialize training data.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames = 7
         self.crop_size = 100
 
@@ -24,7 +30,19 @@ class EASYFLOW(object):
 
 
     def input_producer(self, batch_size=10):
+        """
+        Reads : tf.
+
+        Args:
+            self: (todo): write your description
+            batch_size: (int): write your description
+        """
         def read_data():
+            """
+            Reads a tfimage.
+
+            Args:
+            """
             data_seq = tf.random_crop(self.data_queue, [1, self.num_frames])
             input = tf.stack([tf.image.decode_png(tf.read_file(data_seq[0][i]), channels=3) for i in range(self.num_frames)])
             input = preprocessing(input)
@@ -32,6 +50,12 @@ class EASYFLOW(object):
             return input
 
         def preprocessing(input):
+            """
+            Preprocessing of preprocessing.
+
+            Args:
+                input: (todo): write your description
+            """
             input = tf.cast(input, tf.float32) / 255.0
 
             shape = tf.shape(input)[1:]
@@ -62,6 +86,16 @@ class EASYFLOW(object):
         return batch_in
 #
     def forward(self, imga, imgb, scope='easyflow', reuse=False):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            imga: (todo): write your description
+            imgb: (todo): write your description
+            scope: (todo): write your description
+            reuse: (todo): write your description
+        """
         dims = len(imga.get_shape())
         if dims == 5:
             n, num_frame, height, width, num_channels = imga.get_shape().as_list()
@@ -106,6 +140,12 @@ class EASYFLOW(object):
         return uv
 
     def build_model(self):
+        """
+        Builds the model
+
+        Args:
+            self: (todo): write your description
+        """
         frames_lr = self.input_producer(batch_size=self.batch_size)
         n, t, h, w, c = frames_lr.get_shape().as_list()
 
@@ -130,6 +170,14 @@ class EASYFLOW(object):
 
     def train(self):
         def train_op_func(loss, var_list, is_gradient_clip=False):
+            """
+            Train a function to - op.
+
+            Args:
+                loss: (todo): write your description
+                var_list: (list): write your description
+                is_gradient_clip: (todo): write your description
+            """
             if is_gradient_clip:
                 train_op = tf.train.AdamOptimizer(lr)
                 grads_and_vars = train_op.compute_gradients(loss, var_list=var_list)
@@ -200,6 +248,15 @@ class EASYFLOW(object):
                 self.save(sess, checkpoint_path, step)
 
     def save(self, sess, checkpoint_dir, step):
+        """
+        Save the model to disk.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (int): write your description
+        """
         if not hasattr(self,'saver'):
             self.saver = tf.train.Saver(max_to_keep=50, keep_checkpoint_every_n_hours=1)
         model_name = "easyflow.model"
@@ -210,6 +267,15 @@ class EASYFLOW(object):
         self.saver.save(sess, os.path.join(checkpoint_dir, model_name), global_step=step)
 
     def load(self, sess, checkpoint_dir='./easyflow_log/model1/checkpoints', step=None):
+        """
+        Load the model.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (todo): write your description
+        """
         print(" [*] Reading checkpoints...")
         model_name = "easyflow.model"
 
@@ -224,6 +290,14 @@ class EASYFLOW(object):
             return False
 
     def load_easyflow(self, sess, checkpoint_dir='./easyflow_log/model1/checkpoints'):
+        """
+        Loads checkpoint and loadpoint.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+        """
         print(" [*] Reading EasyFlow checkpoints...")
         model_name = "easyflow.model"
 
@@ -241,6 +315,12 @@ class EASYFLOW(object):
 
 
 def main(_):
+    """
+    Main function.
+
+    Args:
+        _: (int): write your description
+    """
     model = EASYFLOW()
     model.train()
 

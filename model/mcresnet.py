@@ -29,6 +29,12 @@ The code is mainly based on https://github.com/psychopa4/MMCNN and https://githu
 
 class MCRESNET(VSR):
     def __init__(self):
+        """
+        Initialize the game.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames = 5
         self.in_size = 32
         self.scale = 4
@@ -49,6 +55,15 @@ class MCRESNET(VSR):
         self.flownets = EASYFLOW()
 
     def forward(self, frames_lr, is_training=True, reuse=False):
+        """
+        Forward loop.
+
+        Args:
+            self: (todo): write your description
+            frames_lr: (todo): write your description
+            is_training: (bool): write your description
+            reuse: (todo): write your description
+        """
         num_batch, num_frame, height, width, num_channels = frames_lr.get_shape().as_list()
         out_height = height * self.scale
         out_width = width * self.scale
@@ -118,6 +133,12 @@ class MCRESNET(VSR):
         return x_unwrap
 
     def build_model(self):
+        """
+        Builds the model.
+
+        Args:
+            self: (todo): write your description
+        """
         frames_lr, frame_gt = self.double_input_producer()
         n, t, h, w, c = frames_lr.get_shape().as_list()
         output = self.forward(frames_lr)
@@ -142,6 +163,12 @@ class MCRESNET(VSR):
         self.loss = self.loss_mse + self.loss_flow * 0.01
 
     def evaluation(self):
+        """
+        Evaluate the evaluation.
+
+        Args:
+            self: (todo): write your description
+        """
         print('Evaluating ...')
 
         filenames=open(self.eval_dir, 'rt').read().splitlines()
@@ -287,12 +314,30 @@ class MCRESNET(VSR):
             assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
 
     def save(self, sess, checkpoint_dir, step):
+        """
+        Save the model to disk.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (int): write your description
+        """
         model_name = "videoSR.model"
         if not os.path.exists(checkpoint_dir):
             os.makedirs(checkpoint_dir)
         self.saver.save(sess, os.path.join(checkpoint_dir, model_name), global_step=step)
 
     def load(self, sess, checkpoint_dir, step=None):
+        """
+        Load the model.
+
+        Args:
+            self: (todo): write your description
+            sess: (todo): write your description
+            checkpoint_dir: (str): write your description
+            step: (todo): write your description
+        """
         print(" [*] Reading SR checkpoints...")
         model_name = "videoSR.model"
 
@@ -307,6 +352,17 @@ class MCRESNET(VSR):
             return False
 
     def testvideo(self, dataPath=None, savename='result', reuse=False, scale=4, num_frames=3):
+        """
+        Test if the video.
+
+        Args:
+            self: (todo): write your description
+            dataPath: (str): write your description
+            savename: (str): write your description
+            reuse: (todo): write your description
+            scale: (float): write your description
+            num_frames: (int): write your description
+        """
         scale = self.scale
         num_frames= self.num_frames
         inList = sorted(glob.glob(os.path.join(dataPath, 'blur{}/*.png').format(scale)))
@@ -381,6 +437,15 @@ class MCRESNET(VSR):
             print('spent {} s in total and {} s in average'.format(np.sum(all_time),np.mean(all_time[1:])))
 
     def testvideos(self,datapath='/dev/f/data/video/test2/vid4',start=0,savename='mcresnet'):
+        """
+        Test if a video file.
+
+        Args:
+            self: (todo): write your description
+            datapath: (str): write your description
+            start: (todo): write your description
+            savename: (str): write your description
+        """
         kind=sorted(glob.glob(os.path.join(datapath,'*')))
         kind=[k for k in kind if os.path.isdir(k)]
         reuse=False

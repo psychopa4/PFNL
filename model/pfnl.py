@@ -19,6 +19,12 @@ The code is mainly based on https://github.com/psychopa4/MMCNN and https://githu
 
 class PFNL(VSR):
     def __init__(self):
+        """
+        Initialize training data.
+
+        Args:
+            self: (todo): write your description
+        """
         self.num_frames=7
         self.scale=4
         self.in_size=32
@@ -37,6 +43,13 @@ class PFNL(VSR):
         self.log_dir='./pfnl.txt'
     
     def forward(self, x):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         mf=64
         dk=3
         activate=tf.nn.leaky_relu
@@ -80,6 +93,12 @@ class PFNL(VSR):
         return tf.stack([out+bic], axis=1,name='out')#out
 
     def build(self):
+        """
+        Builds the graph.
+
+        Args:
+            self: (todo): write your description
+        """
         in_h,in_w=self.eval_in_size
         H = tf.placeholder(tf.float32, shape=[None, 1, None, None, 3], name='H_truth')
         L_train = tf.placeholder(tf.float32, shape=[self.batch_size, self.num_frames, self.in_size, self.in_size, 3], name='L_train')
@@ -92,6 +111,12 @@ class PFNL(VSR):
         self.L, self.L_eval, self.H, self.SR =  L_train, L_eval, H, SR_train
         
     def eval(self):
+        """
+        Evaluate the model.
+
+        Args:
+            self: (todo): write your description
+        """
         print('Evaluating ...')
         if not hasattr(self, 'sess'):
             sess = tf.Session()
@@ -149,6 +174,12 @@ class PFNL(VSR):
             f.write('{'+'"Iter": {} , "PSNR": {}, "MSE": {}'.format(sess.run(self.global_step), psnr_avg.tolist(), mse_avg.tolist())+'}\n')
     
     def train(self):
+        """
+        Train the model.
+
+        Args:
+            self: (todo): write your description
+        """
         LR, HR= self.single_input_producer()
         global_step=tf.Variable(initial_value=0, trainable=False)
         self.global_step=global_step
@@ -201,6 +232,16 @@ class PFNL(VSR):
             
 
     def test_video_truth(self, path, name='result', reuse=False, part=50):
+        """
+        Test for video.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            name: (str): write your description
+            reuse: (todo): write your description
+            part: (todo): write your description
+        """
         save_path=join(path,name)
         automkdir(save_path)
         inp_path=join(path,'truth')
@@ -262,6 +303,16 @@ class PFNL(VSR):
             print('spent {} s in total and {} s in average'.format(np.sum(all_time),np.mean(all_time[1:])))
 
     def test_video_lr(self, path, name='result', reuse=False, part=50):
+        """
+        Test for video learning.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            name: (str): write your description
+            reuse: (todo): write your description
+            part: (todo): write your description
+        """
         save_path=join(path,name)
         automkdir(save_path)
         inp_path=join(path,'blur{}'.format(self.scale))
@@ -320,6 +371,15 @@ class PFNL(VSR):
             print('spent {} s in total and {} s in average'.format(np.sum(all_time),np.mean(all_time[1:])))
 
     def testvideos(self, path='/dev/f/data/video/test2/udm10', start=0, name='pfnl'):
+        """
+        Test if the video isochastic files.
+
+        Args:
+            self: (todo): write your description
+            path: (str): write your description
+            start: (todo): write your description
+            name: (str): write your description
+        """
         kind=sorted(glob.glob(join(path,'*')))
         kind=[k for k in kind if os.path.isdir(k)]
         reuse=False

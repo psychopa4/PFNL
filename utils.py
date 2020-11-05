@@ -72,8 +72,19 @@ def NonLocalBlock(input_x, out_channels, sub_sample=1, nltype=0 ,is_bn=False, sc
 
 
 def tf_scope(f):
+    """
+    Decorator for functions scope scope.
+
+    Args:
+        f: (array): write your description
+    """
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
+        """
+        Wraps a function decorator.
+
+        Args:
+        """
         func_args=inspect.getcallargs(f, *args, **kwargs)
         with tf.variable_scope(func_args.get('scope'),reuse=tf.AUTO_REUSE) as scope:
             return f(*args, **kwargs)
@@ -81,10 +92,22 @@ def tf_scope(f):
     return wrapper
 
 def automkdir(path):
+    """
+    Ensure that a path exists.
+
+    Args:
+        path: (str): write your description
+    """
     if not exists(path):
         os.makedirs(path)
 
 def get_num_params(vars):
+    """
+    Returns the number of the number of variables.
+
+    Args:
+        vars: (todo): write your description
+    """
     num_params = 0
     for variable in vars:
         shape = variable.get_shape()
@@ -93,6 +116,13 @@ def get_num_params(vars):
 
 
 def gkern(kernlen=13, nsig=1.6):
+    """
+    Gkernlen filter.
+
+    Args:
+        kernlen: (todo): write your description
+        nsig: (array): write your description
+    """
     import scipy.ndimage.filters as fi
     # create nxn zeros
     inp = np.zeros((kernlen, kernlen))
@@ -140,6 +170,14 @@ def LoadImage(path, color_mode='RGB', channel_mean=None, modcrop=[0,0,0,0]):
 '''
 
 def DownSample(x, h, scale=4):
+    """
+    Return a 2d convolution.
+
+    Args:
+        x: (todo): write your description
+        h: (todo): write your description
+        scale: (float): write your description
+    """
     ds_x = tf.shape(x)
 
     x = tf.reshape(x, [ds_x[0]*ds_x[1], ds_x[2], ds_x[3], 3])
@@ -167,6 +205,14 @@ def DownSample(x, h, scale=4):
     return y
     
 def DownSample_4D(x, h, scale=4):
+    """
+    Pad a 2d convolution.
+
+    Args:
+        x: (todo): write your description
+        h: (todo): write your description
+        scale: (float): write your description
+    """
     ds_x = tf.shape(x)
     
     # Reflect padding
@@ -192,6 +238,13 @@ def DownSample_4D(x, h, scale=4):
     return y
 
 def _rgb2ycbcr(img, maxVal=255):
+    """
+    Convert rgb image to rgb.
+
+    Args:
+        img: (array): write your description
+        maxVal: (int): write your description
+    """
     O = np.array([[16],
                   [128],
                   [128]])
@@ -212,6 +265,14 @@ def _rgb2ycbcr(img, maxVal=255):
     return ycbcr
 
 def to_uint8(x, vmin, vmax):
+    """
+    Convert a floating point to a floating point.
+
+    Args:
+        x: (array): write your description
+        vmin: (float): write your description
+        vmax: (int): write your description
+    """
     x = x.astype('float32')
     x = (x-vmin)/(vmax-vmin)*255 # 0~255
     return np.clip(np.round(x), 0, 255)
@@ -267,6 +328,11 @@ def BatchNorm(input, is_train, decay=0.999, name='BatchNorm'):
         moving_variance = tf.get_variable('moving_variance', fdim, initializer=tf.constant_initializer(value=0.0), trainable=False)
   
         def mean_var_with_update():
+            """
+            Compute variance.
+
+            Args:
+            """
             batch_mean, batch_variance = tf.nn.moments(input, axis)
             update_moving_mean = moving_averages.assign_moving_average(moving_mean, batch_mean, decay, zero_debias=True)
             update_moving_variance = moving_averages.assign_moving_average(moving_variance, batch_variance, decay, zero_debias=True)
@@ -278,6 +344,19 @@ def BatchNorm(input, is_train, decay=0.999, name='BatchNorm'):
     return tf.nn.batch_normalization(input, mean, variance, beta, gamma, 1e-3) #, tf.stack([mean[0], variance[0], beta[0], gamma[0]])
 
 def Conv3D(input, kernel_shape, strides, padding, name='Conv3d', W_initializer=he_normal_init, bias=True):
+    """
+    A wrapper for conv3d.
+
+    Args:
+        input: (todo): write your description
+        kernel_shape: (todo): write your description
+        strides: (int): write your description
+        padding: (str): write your description
+        name: (str): write your description
+        W_initializer: (bool): write your description
+        he_normal_init: (bool): write your description
+        bias: (float): write your description
+    """
     with tf.variable_scope(name):
         W = tf.get_variable("W", kernel_shape, initializer=W_initializer)
         if bias is True:
@@ -288,6 +367,14 @@ def Conv3D(input, kernel_shape, strides, padding, name='Conv3d', W_initializer=h
     return tf.nn.conv3d(input, W, strides, padding) + b
 
 def LoadParams(sess, params, in_file='parmas.hdf5'):
+    """
+    Parse parameters from a file.
+
+    Args:
+        sess: (todo): write your description
+        params: (list): write your description
+        in_file: (str): write your description
+    """
     f = h5py.File(in_file, 'r')
     g = f['params']
     assign_ops = []
@@ -318,6 +405,13 @@ def LoadParams(sess, params, in_file='parmas.hdf5'):
     print('Parameters are loaded')
 
 def depth_to_space_3D(x, block_size):
+    """
+    Convert a tensor to a 2d tensor.
+
+    Args:
+        x: (int): write your description
+        block_size: (int): write your description
+    """
     ds_x = tf.shape(x)
     x = tf.reshape(x, [ds_x[0]*ds_x[1], ds_x[2], ds_x[3], ds_x[4]])
     
@@ -348,6 +442,15 @@ def DynFilter3D(x, F, filter_size):
     return x
     
 def Huber(y_true, y_pred, delta, axis=None):
+    """
+    Computes the kl divergence.
+
+    Args:
+        y_true: (array): write your description
+        y_pred: (array): write your description
+        delta: (float): write your description
+        axis: (int): write your description
+    """
     abs_error = tf.abs(y_pred - y_true)
     quadratic = tf.minimum(abs_error, delta)
     # The following expression is the same in value as
@@ -360,18 +463,38 @@ def Huber(y_true, y_pred, delta, axis=None):
     return tf.reduce_mean(losses, axis=axis)
 
 def cv2_imsave(img_path, img):
+    """
+    Convert image to an image
+
+    Args:
+        img_path: (str): write your description
+        img: (array): write your description
+    """
     img = np.squeeze(img)
     if img.ndim == 3:
         img = img[:, :, [2, 1, 0]]
     cv2.imwrite(img_path, img)
 
 def cv2_imread(img_path):
+    """
+    Reads an image file
+
+    Args:
+        img_path: (str): write your description
+    """
     img=cv2.imread(img_path)
     if img.ndim == 3:
         img = img[:, :, [2, 1, 0]]
     return img
 
 def augmentation(lr,hr):
+    """
+    Generate a two - phase.
+
+    Args:
+        lr: (todo): write your description
+        hr: (todo): write your description
+    """
     a=np.random.random_integers(0,1)
     b=np.random.random_integers(0,1)
     rot=np.random.random_integers(0,1)

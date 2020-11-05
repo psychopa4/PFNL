@@ -70,11 +70,23 @@ class BasicConvLSTMCell(ConvRNNCell):
 
   @property
   def state_size(self):
+      """
+      The size of the unit.
+
+      Args:
+          self: (todo): write your description
+      """
     return (LSTMStateTuple(self._num_units, self._num_units)
             if self._state_is_tuple else 2 * self._num_units)
 
   @property
   def output_size(self):
+      """
+      The number of units in bytes. nd.
+
+      Args:
+          self: (todo): write your description
+      """
     return self._num_units
 
   def __call__(self, inputs, state, scope='convLSTM'):

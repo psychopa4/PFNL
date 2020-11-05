@@ -2,7 +2,20 @@
 import tensorflow as tf
 
 def weight_from_caffe(caffenet):
+    """
+    Return a weight function from weight of the weight function.
+
+    Args:
+        caffenet: (todo): write your description
+    """
     def func(shape, dtype):
+        """
+        Return a function.
+
+        Args:
+            shape: (int): write your description
+            dtype: (todo): write your description
+        """
         sc = tf.get_variable_scope()
         name = sc.name.split('/')[-1]
         print ('init: ', name, shape, caffenet.params[name][0].data.shape)
@@ -10,7 +23,20 @@ def weight_from_caffe(caffenet):
     return func
 
 def bias_from_caffe(caffenet):
+    """
+    Returns a bias from a tf.
+
+    Args:
+        caffenet: (todo): write your description
+    """
     def func(shape, dtype):
+        """
+        Decorator for the function.
+
+        Args:
+            shape: (int): write your description
+            dtype: (todo): write your description
+        """
         sc = tf.get_variable_scope()
         name = sc.name.split('/')[-1]
         return caffenet.params[name][1].data
@@ -24,6 +50,12 @@ def prelu(_x, scope=None):
         return tf.maximum(0.0, _x) + _alpha * tf.minimum(0.0, _x)
         
 def selu(x):
+    """
+    Computes a 2 - layer.
+
+    Args:
+        x: (todo): write your description
+    """
     with ops.name_scope('elu') as scope:
         alpha = 1.6732632423543772848170429916717
         scale = 1.0507009873554804934193349852946
