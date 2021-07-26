@@ -12,9 +12,9 @@ This work has tried to rebuild various state-of-the-art video SR methods, includ
 ## Datasets
 We have selected [MM522 dataset](https://github.com/psychopa4/MMCNN) for training and collected another 20 sequences for evaluation, and in consider of copyright, the datasets should only be used for study.
 
-The datasets and checkpoint file are re-uploaded to Baidu Drive, [eval,test,checkpoint](https://pan.baidu.com/s/1TNtkn_dHHQf_3_JABKWgZg) (password: pr7p).
+The datasets and checkpoint file are re-uploaded to TeraBox, [eval,test,checkpoint](https://dubox.com/s/1LMuQCVntRegfZSxn7s3hXw).
 
-Note that the [training](https://drive.google.com/open?id=1xPMYiA0JwtUe9GKiUa4m31XvDPnX7Juu) dataset provides Ground Truth images and Bicubic downsampling LR images, while the [evaluation](https://pan.baidu.com/s/1TNtkn_dHHQf_3_JABKWgZg) (password: pr7p) dataset provides Gaussian blur and downsampling images. Thus, please refer to ./model/base_model.py for generating Gaussian blur and downsampling images from Ground Truth images.
+Note that the [training](https://drive.google.com/open?id=1xPMYiA0JwtUe9GKiUa4m31XvDPnX7Juu) dataset provides Ground Truth images and Bicubic downsampling LR images, while the [evaluation](https://dubox.com/s/1LMuQCVntRegfZSxn7s3hXw) dataset provides Gaussian blur and downsampling images. Thus, please refer to ./model/base_model.py for generating Gaussian blur and downsampling images from Ground Truth images.
 
 Unzip the training dataset to ./data/train/ and evaluation dataset to ./data/val/ .
 
@@ -23,11 +23,11 @@ Unzip the training dataset to ./data/train/ and evaluation dataset to ./data/val
   - Tensorflow (Tested on 1.12.0)
 
 ## Training
-We provide [pre-trained models](https://pan.baidu.com/s/1TNtkn_dHHQf_3_JABKWgZg) (password: pr7p), note that some models have been retrained and part of the codes have been modified, thus some methods may behave a little different from that reported in the paper.
+We provide [pre-trained models](https://dubox.com/s/1LMuQCVntRegfZSxn7s3hXw), note that some models have been retrained and part of the codes have been modified, thus some methods may behave a little different from that reported in the paper.
 Be free to use main.py to train any model you would like to.
 
 ## Testing
-We provide [Vid4](https://pan.baidu.com/s/1TNtkn_dHHQf_3_JABKWgZg) and [UDM10](https://pan.baidu.com/s/1TNtkn_dHHQf_3_JABKWgZg) (password: pr7p) testing datasets.
+We provide [Vid4](https://dubox.com/s/1LMuQCVntRegfZSxn7s3hXw) and [UDM10](https://dubox.com/s/1LMuQCVntRegfZSxn7s3hXw) as testing datasets.
 It should be easy to use 'testvideo()' or 'testvideos()' functions for testing.
 
 ## Citation
